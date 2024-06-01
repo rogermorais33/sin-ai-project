@@ -1,0 +1,67 @@
+.dnd{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.top{
+    display: flex;
+    font-weight: bold;
+}
+
+.underline{
+    text-decoration: underline;
+}
+
+.drag{
+    background-color: #f5f5f5;;
+    display: flex;
+    flex-direction: column;
+    width:fit-content;
+    gap: 24px;
+    padding: 24px;
+    border: 3px dashed #d9d9d9;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+    height: 250px;
+}
+
+.dnd input,
+.dnd .drag .on-drop,
+.dnd .drag.dragover .visible{
+    display: none;
+}
+
+.dnd .container{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.dnd .container .image{
+    width: 80px;
+    margin-right: 6px;
+    height: 75px;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.dnd .container .image img{
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.delete{
+    z-index: 999;
+    color: blue
+}
+
+
+  
