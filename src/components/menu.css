@@ -1,0 +1,15 @@
+.menu{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-inline: 25%;
+    background-color: white;
+}
+.menu span{
+    font-weight: bolder;
+}
+.buttons{
+    display: flex;
+    gap:12px;
+}
+

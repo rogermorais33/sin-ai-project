@@ -1,67 +1,69 @@
-.dnd{
+.dnd {
+    display: flex;
+    flex-direction:row;
+    align-items: top;
+    gap: 24px;
+    width: 100%;
+}
+
+.drag {
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-.top{
-    display: flex;
-    font-weight: bold;
-}
-
-.underline{
-    text-decoration: underline;
-}
-
-.drag{
-    background-color: #f5f5f5;;
-    display: flex;
-    flex-direction: column;
-    width:fit-content;
+    width: 70%;
     gap: 24px;
     padding: 24px;
     border: 3px dashed #d9d9d9;
-    border-radius: 12px;
+    border-radius: 32px;
     align-items: center;
     justify-content: center;
-    width: 500px;
     height: 250px;
+}
+
+.container {
+    display: flex;
+    width: 30%;
+    height: auto;
+    gap: 24px;
+    flex-direction: column;
+}
+
+.dnd .container .file {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    padding: 12px 16px;
+    border-radius: 12px;
+    width: 100%;
+    gap: 12px;
+    background-color: #f1f1f1;
+    overflow:hidden;
+    justify-content: space-between
+}
+.dnd .container .file span{
+    width: fit-content;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    align-items: center;
+}
+
+.top {
+    display: flex;
+    font-weight: bold;
+}
+.underline {
+    text-decoration: underline;
+}
+.delete {
+    z-index: 999;
+    color: #3A3A3A;
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 .dnd input,
 .dnd .drag .on-drop,
-.dnd .drag.dragover .visible{
+.dnd .drag.dragover .visible {
     display: none;
 }
-
-.dnd .container{
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    margin-top: 12px;
-}
-
-.dnd .container .image{
-    width: 80px;
-    margin-right: 6px;
-    height: 75px;
-    position: relative;
-    margin-bottom: 8px;
-}
-
-.dnd .container .image img{
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-}
-
-.delete{
-    z-index: 999;
-    color: blue
-}
-
-
-  

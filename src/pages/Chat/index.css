@@ -1,8 +1,14 @@
+.menu{
+    background-color: #f1f1f1;
+    width: 100vw;
+    padding: 24px 25%;
+
+}
+
 .chat{
     display: flex;
     flex-direction: column; 
     align-items: center;
-    margin: 0px 25%;
     gap: 24px;
     height: 100vh;
   }
@@ -19,22 +25,25 @@
 .icon:hover {
     background-color: darkgray; /* Cor de fundo ao passar o mouse */
 }
+
+.chat-input{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    align-items: center;
+    padding: 0px 25% 24px;
+}
+
 .chat-area{
+
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
     gap: 24px;
     align-items: flex-end;
-}
-
-.chat-input{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 24px;
-    gap: 12px;
-    align-items: center;
+    padding: 0px 25%;
 }
 
 .input-area{
