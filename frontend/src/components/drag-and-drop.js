@@ -3,16 +3,20 @@ import './drag-and-drop.css';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import React, { useState, useRef } from 'react';
 
-export default function Drag() {
+export default function Drag({ onFileUpload }) {
   const [files, setFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   function selectFiles() {
     fileInputRef.current.click();
   }
 
   function onFileSelect(event) {
+    setSelectedFile(event.target.files[0]);
+    onFileUpload(event.target.files[0])
+
     const selectedFiles = event.target.files;
     if (selectedFiles.length === 0) return;
     for (let i = 0; i < selectedFiles.length; i++) {
