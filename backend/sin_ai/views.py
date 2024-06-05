@@ -13,8 +13,8 @@ import fitz
 import re
 import jinja2
 import pdfkit
-from os.path import abspath, dirname, join
-
+import asyncio
+import aiohttp
 
 env = environ.Env()
 
@@ -57,22 +57,28 @@ class UploadQuestionView(APIView):
             return Response({'error': 'No PDF question file provided'}, status=status.HTTP_400_BAD_REQUEST)
         file_path = f'/tmp/{pdf_file.name}'
         with open(file_path, 'wb') as f:
-            for chunk in pdf_file.chunks():\
+            for chunk in pdf_file.chunks():
                 f.write(chunk)
-        
         text = self.read_pdf(file_path)
         questions = self.extract_questions(text)
         all_contents = []
+        responses = asyncio.run(self.call_chatpdf_api(questions, product, description, source_id))
+        for i, question in enumerate(questions):
+            all_contents.append((f"{question[0]}| {question[1]}", responses[i]["content"]))
+        all_contents_path = "/tmp/all_contents.pdf"
+        self.create_pdf_file(all_contents, all_contents_path)
+        return FileResponse(open(all_contents_path, 'rb'), content_type='application/pdf')
+    
+    async def call_chatpdf_api(self, questions, product, description, source_id):
+        tasks = []
         for i, question in enumerate(questions):
             if product:
                 complete_question = f"Escreva a respostas sem desculpa, e sem com base nas informações, escreva de forma formal. O produto {product} {description}, com base nisso e no pdf, a minha pergunta seria: {question[1]}"
             else:
                 complete_question = f"Escreva a respostas sem desculpa, e sem com base nas informações, escreva de forma formal. Com base no pdf, a minha pergunta é: {question[1]}"
-            response = self.send_question(source_id, complete_question)
-            all_contents.append((f"{question[0]}| {question[1]}", response))
-        all_contents_path = "/tmp/all_contents.pdf"
-        self.create_pdf_file(all_contents, all_contents_path)
-        return FileResponse(open(all_contents_path, 'rb'), content_type='application/pdf')
+            tasks.append(self.send_question(source_id, complete_question))
+        responses = await asyncio.gather(*tasks)
+        return responses
     
     def create_pdf_file(self, contents, pdf_path):
         context = {}
@@ -108,8 +114,7 @@ class UploadQuestionView(APIView):
             questions.append((question_number, question_text))
         return questions
 
-
-    def send_question(self, source_id, question):
+    async def send_question(self, source_id, question):
         headers = {
             'x-api-key': env('CHATPDF_API'),
             "Content-Type": "application/json",
@@ -123,12 +128,13 @@ class UploadQuestionView(APIView):
                 }
             ]
         }
-        response = requests.post(
-            'https://api.chatpdf.com/v1/chats/message', headers=headers, json=data)
-
-        if response.status_code == 200:
-            print('Result:', response.json()['content'])
-            return response.json()['content']
-        else:
-            print('Status:', response.status_code)
-            print('Error:', response.text)
+        async with aiohttp.ClientSession() as session:
+            async with session.post('https://api.chatpdf.com/v1/chats/message', headers=headers, json=data) as response:
+                if response.status == 200:
+                    result = await response.json()
+                    print('Result:', result['content'])
+                    return result
+                else:
+                    print('Status:', response.status)
+                    print('Error:', await response.text)
+                    return None

@@ -53,15 +53,27 @@ export default function(){
       formDataAnvisa.set('source_id', source_id);
       const response = await axios.post(`${baseApiUrl}/api/upload/question/`, formDataAnvisa, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'blob'
       });
+      downloadFile(response.data)
       return response.data;
     } catch (error) {
       console.error('Error setting session:', error);
       throw error;
     }
   };
+
+  const downloadFile = (file) => {
+    const url = window.URL.createObjectURL(new Blob([file]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'penis.pdf');
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -73,8 +85,7 @@ export default function(){
     }
     try {
       const responseProduct = await uploadPdfProduct()
-      const source_id = await responseProduct.source_id
-      const responseAnvisa = await uploadPdfQuestions(await source_id)
+      const responseAnvisa = await uploadPdfQuestions(await responseProduct.source_id)
       setUploadSuccessAlert(true);
       return [responseProduct, responseAnvisa];
     } catch (error) {
