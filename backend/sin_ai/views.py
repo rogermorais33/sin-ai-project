@@ -10,6 +10,11 @@ from django.conf import settings
 from django.contrib.auth import authenticate
 from django.middleware import csrf
 
+import numpy as np
+from sklearn.decomposition import TruncatedSVD
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
 from .serializers import UserSerializer
 
 import os
@@ -23,14 +28,6 @@ import asyncio
 import aiohttp
 
 env = environ.Env()
-
-
-from django.http import JsonResponse
-
-def set_cookie_view(request):
-    response = JsonResponse({"message": "Cookie set successfully"})
-    response.set_cookie('meu_cookie', 'valor_do_cookie', httponly=True)
-    return response
 
 class UserCreateView(APIView):
     def post(self, request):
@@ -78,8 +75,6 @@ class UploadProductView(APIView):
     parser_classes = (MultiPartParser, FormParser)
     def post(self, request, *args, **kwargs):
         access_token = request.COOKIES.get('access_token')
-        print("ACESSSS_TOKEN?", access_token)
-        print("PDFSSSSSS", request.FILES.get('pdf'))
         result = token_validation(access_token)
         if result != 400 and result != 401:
             pdf_file = request.FILES.get('pdf')
@@ -132,6 +127,9 @@ class UploadQuestionView(APIView):
             responses = asyncio.run(self.call_chatpdf_api(questions, product, description, source_id))
             for i, question in enumerate(questions):
                 all_contents.append((f"{question[0]}| {question[1]}", responses[i]["content"]))
+            all_questions = [i[0] for i in all_contents]
+            all_answers = [i[1] for i in all_contents]
+            self.create_similarity(all_questions, all_answers)
             all_contents_path = "/tmp/all_contents.pdf"
             self.create_pdf_file(all_contents, all_contents_path)
             return FileResponse(open(all_contents_path, 'rb'), content_type='application/pdf')
@@ -149,7 +147,15 @@ class UploadQuestionView(APIView):
             tasks.append(self.send_question(source_id, complete_question))
         responses = await asyncio.gather(*tasks)
         return responses
-    
+
+    def create_similarity(self, questions, answers):
+        matched_answers = match_questions_to_answers(questions, answers)
+        with open("similarity.txt", "w") as file:
+            for match in matched_answers:
+                file.write(f"Question: {match.get('question')}\n")
+                file.write(f"Similarity Score: {match.get('similarity_score')}\n")
+                file.write("----------\n")
+
     def create_pdf_file(self, contents, pdf_path):
         context = {}
         for i, (quest, res) in enumerate(contents):
@@ -228,7 +234,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
                 response.set_cookie(
                     key = settings.SIMPLE_JWT['AUTH_COOKIE'],
                     value = data.get("access"),
-                    expires=60*60*1,
+                    expires=60*60*10,
                     secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
                     httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
                     samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
@@ -262,3 +268,23 @@ class CookieTokenRefreshView(TokenRefreshView):
             except Exception as e: 
                 return Response({"message": "Token invalid or expired"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Error": "No refresh token provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+def process_texts_with_svd(questions, answers):
+    vectorizer = TfidfVectorizer()
+    all_texts = questions + answers
+    text_vectors = vectorizer.fit_transform(all_texts)
+
+    n_features = text_vectors.shape[1]
+    n_components = min(100, n_features)
+    svd = TruncatedSVD(n_components=n_components)
+    svd_transformed = svd.fit_transform(text_vectors)
+
+    question_svd = svd_transformed[:-1]
+    product_svd = svd_transformed[-1].reshape(1, -1)    
+    similarities = cosine_similarity(question_svd, product_svd)
+    return similarities
+
+def match_questions_to_answers(questions, answers):
+    similarities = process_texts_with_svd(questions, answers)
+    matched_answers = [{"question": question, "similarity_score": similarity[0]} for question, similarity in zip(questions, similarities)]
+    return matched_answers

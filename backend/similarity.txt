@@ -1,0 +1,117 @@
+Question: 1| Número do Processo
+Similarity Score: 0.03553094385801127
+----------
+Question: 2| Expediente (Dia /
+Similarity Score: 1.6653345369377348e-16
+----------
+Question: 3| Solicitante
+Similarity Score: -3.469446951953614e-17
+----------
+Question: 4| Número de Autorização/Cadastro
+Similarity Score: 0.023426030828015892
+----------
+Question: 5| Fabricante
+Similarity Score: 0.13815123021641515
+----------
+Question: 6| Número de Autorização/Cadastro
+Similarity Score: 0.023426030828015892
+----------
+Question: 7| Número do CE do Estudo
+Similarity Score: 0.12482972798118344
+----------
+Question: 8| Titulo do Estudo
+Similarity Score: 0.1178498399983608
+----------
+Question: 9| Classe Terapêutica/categoria
+Similarity Score: 6.938893903907228e-18
+----------
+Question: 10| ( ) Sintético ou Semi-sintético
+Similarity Score: 0.04079977688975765
+----------
+Question: 11| Denominação da Substância Ativa
+Similarity Score: 4.649058915617843e-16
+----------
+Question: 12| Marca/Complemento
+Similarity Score: -4.163336342344337e-17
+----------
+Question: 13| Apresentação
+Similarity Score: 1.734723475976807e-16
+----------
+Question: 14| Forma Física / Farmacêutica
+Similarity Score: -1.3183898417423734e-16
+----------
+Question: 15| Via de Administração
+Similarity Score: 0.01918817735386404
+----------
+Question: 16| Restrição de Uso
+Similarity Score: 0.0202097563114272
+----------
+Question: 17| Prazo de Validade
+Similarity Score: 0.019188177353863786
+----------
+Question: 18| Cuidados de Conservação
+Similarity Score: 0.018812608654245555
+----------
+Question: 19| Posologia
+Similarity Score: 5.37153898551752e-34
+----------
+Question: 20| Dose Diária
+Similarity Score: 2.498001805406602e-16
+----------
+Question: 21| Duração prevista do tratamento
+Similarity Score: 0.02185221957289222
+----------
+Question: 22| Medicamento controlado
+Similarity Score: 0.061623391764871305
+----------
+Question: 23| Medicamento aprovado no Brasil?
+Similarity Score: 0.1003150444665925
+----------
+Question: 24| Número de Registro (se houver)
+Similarity Score: 0.03722105254863328
+----------
+Question: 25| Em caso de medicamento registrado no Brasil,
+Similarity Score: 0.1592472043877886
+----------
+Question: 26| Medicamento aprovado no Mundo?
+Similarity Score: 0.09453529177347379
+----------
+Question: 27| Países onde o medicamento está aprovado
+Similarity Score: 0.1185526688056944
+----------
+Question: 28| Fase de desenvolvimento clínico em que se encontra o medicamento (especificar)
+Similarity Score: 0.14420998564649232
+----------
+Question: 29| Países em que os estudos estão sendo conduzidos (se aplicável)
+Similarity Score: 0.18599394328769286
+----------
+Question: 30| Centros de pesquisa no Brasil em que os
+Similarity Score: 0.19548536879106643
+----------
+Question: 31| Indicação Clínica
+Similarity Score: 1.695485770602712e-16
+----------
+Question: 32a| CID-
+Similarity Score: -7.632783294297951e-17
+----------
+Question: 32b| CID-
+Similarity Score: -1.1102230246251565e-16
+----------
+Question: 32c| CID-
+Similarity Score: -1.0408340855860843e-16
+----------
+Question: 32d| CID-
+Similarity Score: -5.551115123125783e-17
+----------
+Question: 32e| CID-
+Similarity Score: -1.1102230246251565e-16
+----------
+Question: 32f| CID-
+Similarity Score: -2.0816681711721685e-17
+----------
+Question: 10| Dados do Estudo Clínico
+Similarity Score: 0.08776785506893253
+----------
+Question: 33| Paises em que o medicamento foi fornecido pós-estudo (se
+Similarity Score: 0.38787955367264676
+----------
