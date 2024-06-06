@@ -8,7 +8,7 @@ import Alert from '@mui/material/Alert';
 import React, { useState } from 'react';
 import axios from 'axios'
 
-export default function(){
+export default function Home(){
   const baseApiUrl = process.env.REACT_APP_BASE_API_URL;
   
   const [productFile, setProductFile] = useState(null);
@@ -35,7 +35,8 @@ export default function(){
       const response = await axios.post(`${baseApiUrl}/api/upload/product/`, formDataProduct, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        withCredentials: true
       });
       return response.data;
     } catch (error) {
@@ -55,7 +56,8 @@ export default function(){
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        responseType: 'blob'
+        responseType: 'blob',
+        withCredentials: true,
       });
       downloadFile(response.data)
       return response.data;
@@ -69,7 +71,7 @@ export default function(){
     const url = window.URL.createObjectURL(new Blob([file]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'penis.pdf');
+    link.setAttribute('download', 'result.pdf');
     document.body.appendChild(link);
     link.click();
     link.parentNode.removeChild(link);
@@ -102,14 +104,12 @@ export default function(){
           <h2>Produto a ser analisado</h2>
           <div className='forms'>
             <TextField 
-              id="outlined-basic" 
               label="Nome do produto" 
               variant="outlined" 
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
             />
             <TextField 
-              id="outlined-basic" 
               label="Descrição do produto" 
               variant="outlined" 
               value={productDescription}

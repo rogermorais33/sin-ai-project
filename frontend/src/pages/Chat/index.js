@@ -5,7 +5,7 @@ import SendIcon from '@mui/icons-material/Send';
 import UserChat from '../../components/user-chat';
 import { useState } from 'react';
 
-function Chat() {
+export default function Chat() {
   const [components, setComponents] = useState([]);
   const [message, setMessage] = useState('');
 
@@ -51,5 +51,3 @@ function Chat() {
     </div>
   )
 }
-
-export default Chat;
